@@ -12,7 +12,9 @@ interface BooleanResult {
 /**
  * You won't need to change anything in this file.
  * Use it as a reference for how to develop the "/api/create_new_account" endpoint.
- */
+*/
+
+// this is the req/res handler function that will handle requests to the /api/password_exposed endpoint
 export default function passwordExposed(req: NextApiRequest, res: NextApiResponse<BooleanResult>) {
   const { password }: PasswordExposedParameters = JSON.parse(req.body);
 
