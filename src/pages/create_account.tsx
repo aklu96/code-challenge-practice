@@ -1,19 +1,23 @@
 import Head from 'next/head';
-import { useState, ChangeEventHandler, FormEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import styles from 'src/styles/create_account.module.scss';
 
 export default function CreateAccount() {
 
-  // state
+  // state management
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const setCredentials = {
+    username: setUsername,
+    password: setPassword
+  }
 
   // handlers
   function handleInputChange(e: FormEvent) {
-    // designate target as an input element which is guaranteed to have a value property
+    // designate target as an input element which is guaranteed to have
+    // name & value properties
     const target = e.target as HTMLInputElement;
-    setUsername(target.value);
+    setCredentials[target.name](target.value);
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -35,6 +39,7 @@ export default function CreateAccount() {
       <article className={styles.article}>
         <form className={styles.form} onSubmit={handleSubmit}>
           <input name="username" value={username} onChange={handleInputChange} />
+          <input name="password" value={password} onChange={handleInputChange} />
           <button>Create Account</button>
         </form>
       </article>
