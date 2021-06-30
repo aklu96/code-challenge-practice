@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { useState, ChangeEventHandler, FormEvent } from 'react';
 import styles from 'src/styles/create_account.module.scss';
-import Username from './components/Username';
 
 export default function CreateAccount() {
 
@@ -11,17 +10,11 @@ export default function CreateAccount() {
 
 
   // handlers
-  function handleUsernameChange(username: string) {
-    setUsername(username);
-  }
-
-  console.log(username);
-  /* function handleChange(e: FormEvent) {
+  function handleInputChange(e: FormEvent) {
     // designate target as an input element which is guaranteed to have a value property
     const target = e.target as HTMLInputElement;
-    console.log(target.value);
-    setText(target.value);
-  } */
+    setUsername(target.value);
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -41,8 +34,7 @@ export default function CreateAccount() {
       </Head>
       <article className={styles.article}>
         <form className={styles.form} onSubmit={handleSubmit}>
-          {/*<input name="username" value={text} onChange={handleChange} />*/}
-          <Username handleUsernameChange={handleUsernameChange} />
+          <input name="username" value={username} onChange={handleInputChange} />
           <button>Create Account</button>
         </form>
       </article>
