@@ -3,8 +3,9 @@ import Image from 'next/image';
 import { useState, FormEvent } from 'react';
 import styles from 'src/styles/create_account.module.scss';
 import logo from '../../public/wealthfront_logo.png';
+import Input from './components/Input';
 
-export default function CreateAccount() {
+const CreateAccount = () => {
 
   // state management
   const [username, setUsername] = useState('');
@@ -15,14 +16,14 @@ export default function CreateAccount() {
   }
 
   // handlers
-  function handleInputChange(e: FormEvent) {
+  const handleInputChange = (e: FormEvent) => {
     // designate target as an input element which is guaranteed to have
     // name & value properties
     const target = e.target as HTMLInputElement;
-    setCredentials[target.name](target.value);
+    setCredentials[target.id](target.value);
   }
 
-  async function handleSubmit(e: FormEvent) {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const response = await fetch('/api/create_new_account', {
@@ -33,28 +34,37 @@ export default function CreateAccount() {
     console.log(await response.json());
   }
 
+  // style classes
+  const {
+    article,
+    form,
+    image,
+    title
+  } = styles;
+
   return (
     <>
       <Head>
         <title>Create Account</title>
       </Head>
-      <article className={styles.article}>
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <figure className={styles.figure}>
+      <article className={article}>
+        <form className={form} onSubmit={handleSubmit}>
+          <figure className={image}>
             <Image
-              className={styles.image}
               src={logo}
               alt="Wealthfront logo"
               width={40}
               height={40}
             />
           </figure>
-          <h1>Create New Account</h1>
-          <input name="username" value={username} onChange={handleInputChange} />
-          <input name="password" value={password} onChange={handleInputChange} />
+          <h1 className={title} >Create New Account</h1>
+          <Input id={'username'} type={'text'} label={'Username'} value={username} onChange={handleInputChange} />
+          <Input id={'password'} type={'password'} label={'Password'} value={password} onChange={handleInputChange} />
           <button>Create Account</button>
         </form>
       </article>
     </>
   );
 }
+
+export default CreateAccount;

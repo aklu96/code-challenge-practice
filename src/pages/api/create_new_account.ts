@@ -10,6 +10,8 @@ interface BooleanResult {
   errors?: Record<string, string>;
 }
 
-export default function createNewAccount(req: NextApiRequest, res: NextApiResponse<BooleanResult>) {
+const createNewAccount = (req: NextApiRequest, res: NextApiResponse<BooleanResult>) => {
   res.status(200).json({ result: true });
 }
+
+export default createNewAccount;
