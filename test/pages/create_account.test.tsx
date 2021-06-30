@@ -15,7 +15,12 @@ describe('CreateAccount', () => {
   test('rendering', () => {
     render(<CreateAccount />);
     fetchMock.mockResponseOnce(JSON.stringify({}));
+
+    // imitates a user clicking the create account button
     userEvent.click(screen.getByText('Create Account'));
+
+    // after the click, tests that a fetch request was made once
+    // to our api endpoint and corresponding options
     expect(fetchMock).toBeCalledTimes(1);
     expect(fetchMock).toBeCalledWith('/api/create_new_account', {
       body: '{}',

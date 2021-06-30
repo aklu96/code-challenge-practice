@@ -8,6 +8,7 @@ import { mockRequest } from 'test/utils';
  */
 describe('/api/password_exposed', () => {
   test('returns true for exposed password', async () => {
+    // get mock req and res objects from utils
     const { req, res } = mockRequest({
       method: 'POST',
       body: {
@@ -15,6 +16,7 @@ describe('/api/password_exposed', () => {
       },
     });
 
+    // call our password_exposed endpoint handler on the mocks
     await passwordExposed(req, res);
 
     expect(res._getStatusCode()).toBe(200);
