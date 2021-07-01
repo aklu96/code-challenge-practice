@@ -3,7 +3,7 @@ import faker from 'faker';
 
 // store passwords as keys for constant-time lookup
 const passwords: Record<string, number> = {
-  weakpass: 0
+  'weakpassweakpassweakpass2021!': 0
 }
 
 for (let i = 1; i < 50; i++) {

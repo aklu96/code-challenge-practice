@@ -11,6 +11,7 @@ import Image from 'next/image';
 import Input from './components/Input';
 import Error from './components/Error';
 import Button from './components/Button';
+import Modal from './components/Modal';
 
 interface Errors {
   username_too_short?: string;
@@ -33,8 +34,8 @@ const CreateAccount = () => {
   }
 
   // errors objects will match the response returned from the api
-  const [usernameErrs, setUserErrs] = useState <Errors> ({});
-  const [passwordErrs, setPassErrs] = useState <Errors> ({});
+  const [usernameErrs, setUserErrs] = useState<Errors>({});
+  const [passwordErrs, setPassErrs] = useState<Errors>({});
 
   // password exposed state
   const [exposedPass, setExpPass] = useState(false);
@@ -92,6 +93,8 @@ const CreateAccount = () => {
 
       // if it is exposed, we want to render a modal to ask user whether they
       // would like to proceed or not
+
+      // use this password for testing: weakpassweakpassweakpass2021!
       if (passwordExposed.result) {
         setExpPass(true);
       }
@@ -141,7 +144,7 @@ const CreateAccount = () => {
     );
   };
 
-  const renderPasswordErrors = () => {
+  const renderPasswordErrors = (): ReactElement => {
     return (
       <div>
         {Object.entries(passwordErrs).map(([errorID, message]) => {
@@ -197,7 +200,9 @@ const CreateAccount = () => {
           {renderPasswordErrors()}
           <Button name={'Create Account'} />
         </form>
+        <Modal show={exposedPass} />
       </article>
+
     </>
   );
 };
