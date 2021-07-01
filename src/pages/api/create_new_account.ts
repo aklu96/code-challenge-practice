@@ -9,7 +9,12 @@ interface BooleanResult {
 const createNewAccount = (req: NextApiRequest, res: NextApiResponse<BooleanResult>) => {
   const accountInfo = JSON.parse(req.body);
   const response = validate(accountInfo);
-  res.status(200).json(response);
+  if (response.result) {
+    res.status(201).json(response);
+  } else {
+    res.status(403).json(response);
+  }
+
 }
 
 export default createNewAccount;

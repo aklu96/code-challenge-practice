@@ -1,7 +1,7 @@
 .button {
   margin-top: 10px;
   color: white;
-  background-color: slateblue;
+  background-color: rgb(77, 59, 192);
   padding: 15px 32px;
   text-align: center;
   font-family: Helvetica, Arial, sans-serif;
@@ -12,6 +12,6 @@
   cursor: pointer;
   transition-duration: 0.2s;
   &:hover {
-    background-color: darkslateblue;
+    background-color: rgb(53, 41, 131);
   }
 }
