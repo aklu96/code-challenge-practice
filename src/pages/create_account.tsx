@@ -1,5 +1,6 @@
 // hooks + types
 import { useState, FormEvent, ReactElement } from 'react';
+import { useRouter } from 'next/router';
 
 // UI
 import styles from 'src/styles/create_account.module.scss';
@@ -23,7 +24,7 @@ interface Errors {
   password_no_symbol?: string;
 }
 
-const CreateAccount = () => {
+const CreateAccount = (): ReactElement => {
   // state
   // form state management
   const [username, setUsername] = useState('');
@@ -31,7 +32,7 @@ const CreateAccount = () => {
   const setAccountInfo = {
     username: setUsername,
     password: setPassword
-  }
+  };
 
   // errors objects will match the response returned from the api
   const [usernameErrs, setUserErrs] = useState<Errors>({});
@@ -39,6 +40,9 @@ const CreateAccount = () => {
 
   // password exposed state
   const [exposedPass, setExpPass] = useState(false);
+
+  // for successful account creation, redirect to the login page
+  const router = useRouter();
 
 
   // API requests
@@ -159,6 +163,12 @@ const CreateAccount = () => {
     );
   };
 
+  // this function will be called upon successful account creation
+  // and redirect the user to the login page
+  const createdAccountRedirect = () => {
+    router.push('/login');
+  }
+
   // style classes
   const {
     article,
@@ -202,7 +212,7 @@ const CreateAccount = () => {
           <Button text={'Create Account'} />
         </form>
       </article>
-      <Modal show={exposedPass} />
+      <Modal show={exposedPass} createAccount={createdAccountRedirect} />
     </>
   );
 };

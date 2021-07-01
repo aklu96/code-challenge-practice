@@ -1,16 +1,20 @@
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import styles from './modal.module.scss';
 import Button from '../Button';
 
 interface Props {
   show: boolean;
+  createAccount: () => void;
 }
 
-// "No" button will simply close the modal
-// "Yes" will come with a passed down handler to render the next view
+// Change password button will close the modal
+// Proceed will render the next view
 
-const Modal = (props: Props) => {
-  const { show } = props;
+const Modal = (props: Props): ReactElement => {
+  const {
+    show,
+    createAccount
+  } = props;
   if (!show) return null;
 
   const [hover, setHover] = useState(false);
@@ -29,7 +33,7 @@ const Modal = (props: Props) => {
   const proceedButton = {
     margin: '5px',
     color: 'grey',
-    'background-color': hover ? 'rgb(138, 199, 219)' : 'lightblue'
+    backgroundColor: hover ? 'rgb(138, 199, 219)' : 'lightblue'
   }
 
   return (
@@ -43,8 +47,9 @@ const Modal = (props: Props) => {
           <Button
             style={proceedButton}
             text={'Proceed with unsafe password'}
-            onMouseEnter={()=>setHover(true)}
-            onMouseLeave={()=>setHover(false)}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            onClick={createAccount}
           />
         </div>
       </div>

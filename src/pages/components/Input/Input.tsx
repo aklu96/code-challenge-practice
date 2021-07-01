@@ -1,4 +1,4 @@
-import { FormEvent } from 'react';
+import { FormEvent, ReactElement } from 'react';
 import styles from './input.module.scss';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
   onChange: (e: FormEvent) => void
 }
 
-const Input = (props: Props) => {
+const Input = (props: Props): ReactElement => {
   const {
     id,
     type,

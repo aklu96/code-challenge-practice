@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import styles from './button.module.scss';
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
   onMouseLeave?: () => void;
 }
 
-const Button = (props: Props) => {
+const Button = (props: Props): ReactElement => {
   const {
     text,
     style,
