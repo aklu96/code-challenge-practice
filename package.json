@@ -30,7 +30,8 @@
       "<rootDir>"
     ],
     "moduleNameMapper": {
-      "^.+\\.scss$": "babel-jest"
+      "^.+\\.scss$": "babel-jest",
+      "\\.png$": "<rootDir>/test/mocks/imageMock.ts"
     },
     "testEnvironment": "jsdom"
   }

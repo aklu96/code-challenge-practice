@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import createNewAccount from 'src/pages/api/create_new_account';
-import { mockRequest } from 'test/utils';
+import { mockRequest } from 'test/mocks/utils';
 
 describe('/api/create_new_account', () => {
   test('returns true', async () => {

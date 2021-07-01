@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import passwordExposed from 'src/pages/api/password_exposed';
-import { mockRequest } from 'test/utils';
+import { mockRequest } from 'test/mocks/utils';
 
 /**
  * You won't need to change anything in this file.
