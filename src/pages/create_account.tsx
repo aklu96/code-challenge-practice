@@ -3,7 +3,7 @@ import { useState, FormEvent, ReactElement } from 'react';
 
 // UI
 import styles from 'src/styles/create_account.module.scss';
-import logo from '../../public/wealthfront_logo.png';
+import logo from '../../public/wealthfront-logo.png';
 
 // components
 import Head from 'next/head';
@@ -35,6 +35,13 @@ const CreateAccount = () => {
   // errors objects will match the response returned from the api
   const [usernameErrs, setUserErrs] = useState <Errors> ({});
   const [passwordErrs, setPassErrs] = useState <Errors> ({});
+
+
+  // API requests
+  const createAccountRequest = () => {
+
+  };
+
 
   // handlers
   const handleInputChange = (e: FormEvent) => {
@@ -92,13 +99,14 @@ const CreateAccount = () => {
     }
   };
 
+
   // render methods
   const renderUsernameErrors = (): ReactElement => {
     return (
       <div>
         {Object.entries(usernameErrs).map(([errorID, message]) => {
           // value will either be undefined or the error message
-          // if value exists, render an Error element and pass it the message
+          // if value exists, render an Error element and pass the message to it
           if (message) {
             return <Error key={errorID} message={message} />
           }
@@ -112,7 +120,7 @@ const CreateAccount = () => {
       <div>
         {Object.entries(passwordErrs).map(([errorID, message]) => {
           // value will either be undefined or the error message
-          // if value exists, render an Error element and pass it the message
+          // if value exists, render an Error element and pass the message to it
           if (message) {
             return <Error key={errorID} message={message} />
           }

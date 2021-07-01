@@ -14,7 +14,6 @@ const createNewAccount = (req: NextApiRequest, res: NextApiResponse<BooleanResul
   } else {
     res.status(403).json(response);
   }
-
 }
 
 export default createNewAccount;
