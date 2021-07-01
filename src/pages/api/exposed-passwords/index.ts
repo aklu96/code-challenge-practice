@@ -1,2 +1,2 @@
-import passwords from 'passwordGenerator';
+import passwords from './passwordGenerator';
 export default passwords;

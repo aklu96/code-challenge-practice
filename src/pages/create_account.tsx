@@ -23,8 +23,8 @@ interface Errors {
 }
 
 const CreateAccount = () => {
-
-  // state management
+  // state
+  // form state management
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const setAccountInfo = {
@@ -36,10 +36,36 @@ const CreateAccount = () => {
   const [usernameErrs, setUserErrs] = useState <Errors> ({});
   const [passwordErrs, setPassErrs] = useState <Errors> ({});
 
+  // password exposed state
+  const [exposedPass, setExpPass] = useState(false);
+
 
   // API requests
-  const createAccountRequest = () => {
 
+  // returns an object specifying whether the credentials pass validation
+  // and if not, what the specific errors are
+  const createAccountRequest = async () => {
+    const response = await fetch('/api/create_new_account', {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+        password
+      }),
+    });
+
+    return await response.json();
+  };
+
+  // returns an object specifying whether the password is exposed or not
+  const passwordExposedRequest = async () => {
+    const response = await fetch('/api/password_exposed', {
+      method: 'POST',
+      body: JSON.stringify({
+        password
+      })
+    });
+
+    return await response.json();
   };
 
 
@@ -54,21 +80,21 @@ const CreateAccount = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    const serverRes = await fetch('/api/create_new_account', {
-      method: 'POST',
-      body: JSON.stringify({
-        username,
-        password
-      }),
-    });
-
-    const response = await serverRes.json();
+    const response = await createAccountRequest();
 
     // if response succeeds, we want to clear any existing errors
     // and make an API call to password_exposed
     if (response.result) {
       setUserErrs({});
       setPassErrs({});
+
+      const passwordExposed = await passwordExposedRequest();
+
+      // if it is exposed, we want to render a modal to ask user whether they
+      // would like to proceed or not
+      if (passwordExposed.result) {
+        setExpPass(true);
+      }
 
     } else {
       // if response fails, update the error state variables
