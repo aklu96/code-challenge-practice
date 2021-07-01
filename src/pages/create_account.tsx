@@ -4,6 +4,7 @@ import { useState, FormEvent } from 'react';
 import styles from 'src/styles/create_account.module.scss';
 import logo from '../../public/wealthfront_logo.png';
 import Input from './components/Input';
+import Button from './components/Button';
 
 const CreateAccount = () => {
 
@@ -58,13 +59,13 @@ const CreateAccount = () => {
             />
           </figure>
           <h1 className={title} >Create New Account</h1>
-          <Input id={'username'} type={'text'} label={'Username'} value={username} onChange={handleInputChange} />
-          <Input id={'password'} type={'password'} label={'Password'} value={password} onChange={handleInputChange} />
-          <button>Create Account</button>
+          <Input id={'username'} type={'text'} name={'Username'} value={username} onChange={handleInputChange} />
+          <Input id={'password'} type={'password'} name={'Password'} value={password} onChange={handleInputChange} />
+          <Button name={'Create Account'} />
         </form>
       </article>
     </>
   );
-}
+};
 
 export default CreateAccount;
