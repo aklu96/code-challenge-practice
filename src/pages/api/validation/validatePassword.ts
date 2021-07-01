@@ -1,14 +1,10 @@
-interface Errors {
-  errors: Array<string>
-}
-
-const validatePassword = (password: string): boolean | Errors => {
-  const errors = [];
+const validatePassword = (password: string): Record<string, string> => {
+  const errors = {};
   if (password.length < 20) {
-    errors.push('Your password must be at least 20 characters long');
+    errors['password_too_short'] = 'Your password must be at least 20 characters long';
   }
   if (password.length > 50) {
-    errors.push('Your password must be at most 50 characters long');
+    errors['password_too_long'] = 'Your password must be at most 50 characters long';
   }
 
 
@@ -30,21 +26,16 @@ const validatePassword = (password: string): boolean | Errors => {
   }
 
   if (!containsLetter) {
-    errors.push('Must contain a letter');
+    errors['password_no_letter'] = 'Must contain a letter';
   }
   if (!containsNumber) {
-    errors.push('Must contain a number');
+    errors['password_no_number'] = 'Must contain a number';
   }
   if (!containsSymbol) {
-    errors.push('Must contain one of the following symbols: !,@,#,$,%');
+    errors['password_no_symbol'] = 'Must contain one of the following symbols: !,@,#,$,%';
   }
 
-  if (errors.length > 0) {
-    return {
-      errors
-    };
-  }
-  return true;
+  return errors;
 }
 
 export default validatePassword;

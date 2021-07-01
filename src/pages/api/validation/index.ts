@@ -1,28 +1,46 @@
 import validateUsername from './validateUsername';
 import validatePassword from './validatePassword';
 
-interface AccountInfo {
-  username: string,
-  password: string
+interface CreateNewAccountParameters {
+  username: string;
+  password: string;
 }
 
 // endpoint will return an informative object to the UI;
 // if either username or password does not meet criteria,
 // the specific error(s) will be displayed
-interface Errors {
+/* interface Errors {
   errors: Array<string>
 }
 
 interface Response {
   username: boolean | Errors;
   password: boolean | Errors;
+} */
+
+interface BooleanResult {
+  result: boolean;
+  errors?: Record<string, string>;
 }
 
-const validate = (info: AccountInfo): Response => {
-  return {
-    username: validateUsername(info.username),
-    password: validatePassword(info.password)
-  };
+const validate = (info: CreateNewAccountParameters): BooleanResult => {
+  let result = true;
+  let errors: Record<string, string>;
+
+  const usernameRes = validateUsername(info.username);
+  const passwordRes = validatePassword(info.password);
+
+  if (Object.keys(usernameRes).length > 0 || Object.keys(passwordRes).length > 0) {
+    result = false;
+    errors = Object.assign(usernameRes, passwordRes);
+  }
+
+  return result ? {
+    result
+  } : {
+    result,
+    errors
+  }
 };
 
 export default validate;
