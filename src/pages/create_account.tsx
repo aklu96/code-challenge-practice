@@ -20,7 +20,7 @@ interface Errors {
   password_too_long?: string;
   password_no_letter?: string;
   password_no_number?: string;
-  password_no_symbol?: string
+  password_no_symbol?: string;
 }
 
 const CreateAccount = () => {
@@ -95,6 +95,7 @@ const CreateAccount = () => {
       // would like to proceed or not
 
       // use this password for testing: weakpassweakpassweakpass2021!
+      // exposed password that passes validation
       if (passwordExposed.result) {
         setExpPass(true);
       }
@@ -198,11 +199,10 @@ const CreateAccount = () => {
             onChange={handleInputChange}
           />
           {renderPasswordErrors()}
-          <Button name={'Create Account'} />
+          <Button text={'Create Account'} />
         </form>
-        <Modal show={exposedPass} />
       </article>
-
+      <Modal show={exposedPass} />
     </>
   );
 };
