@@ -11,7 +11,7 @@ const CreateAccount = () => {
   // state management
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const setCredentials = {
+  const setAccountInfo = {
     username: setUsername,
     password: setPassword
   }
@@ -21,7 +21,7 @@ const CreateAccount = () => {
     // designate target as an input element which is guaranteed to have
     // name & value properties
     const target = e.target as HTMLInputElement;
-    setCredentials[target.id](target.value);
+    setAccountInfo[target.id](target.value);
   }
 
   const handleSubmit = async (e: FormEvent) => {
@@ -29,7 +29,10 @@ const CreateAccount = () => {
 
     const response = await fetch('/api/create_new_account', {
       method: 'POST',
-      body: JSON.stringify({}),
+      body: JSON.stringify({
+        username,
+        password
+      }),
     });
 
     console.log(await response.json());

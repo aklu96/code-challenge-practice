@@ -1,6 +1,28 @@
-// will button together all validation functions into one
-// (unless it's clearer to have one file)
-export default true;
+import validateUsername from './validateUsername';
+import validatePassword from './validatePassword';
 
+interface AccountInfo {
+  username: string,
+  password: string
+}
 
-// ".+\\.png$": "identity-obj-proxy"
+// endpoint will return an informative object to the UI;
+// if either username or password does not meet criteria,
+// the specific error(s) will be displayed
+interface Errors {
+  errors: Array<string>
+}
+
+interface Response {
+  username: boolean | Errors;
+  password: boolean | Errors;
+}
+
+const validate = (info: AccountInfo): Response => {
+  return {
+    username: validateUsername(info.username),
+    password: validatePassword(info.password)
+  };
+};
+
+export default validate;

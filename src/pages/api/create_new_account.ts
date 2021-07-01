@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import validate from './validation';
 
 interface CreateNewAccountParameters {
   username: string;
@@ -11,6 +12,8 @@ interface BooleanResult {
 }
 
 const createNewAccount = (req: NextApiRequest, res: NextApiResponse<BooleanResult>) => {
+  const accountInfo = JSON.parse(req.body);
+  console.log(validate(accountInfo));
   res.status(200).json({ result: true });
 }
 
