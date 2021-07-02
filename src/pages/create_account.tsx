@@ -1,3 +1,11 @@
+/**
+ *                          ---   NOTE   ---
+ * Please use this password for testing exposed passwords workflow:
+ * weakpassweakpassweakpass2021!
+ * It's an exposed password that passes validation
+ *
+*/
+
 // hooks + types
 import { useState, FormEvent, ReactElement } from 'react';
 import { useRouter } from 'next/router';
@@ -38,14 +46,14 @@ const CreateAccount = (): ReactElement => {
   const [usernameErrs, setUserErrs] = useState<Errors>({});
   const [passwordErrs, setPassErrs] = useState<Errors>({});
 
-  // password exposed state
-  const [exposedPass, setExpPass] = useState(false);
+  // modal state corresponding to password exposed flow
+  const [showModal, setModal] = useState(false);
 
   // for successful account creation, redirect to the login page
   const router = useRouter();
 
 
-  // API requests
+  // API requests & page routing
 
   // returns an object specifying whether the credentials pass validation
   // and if not, what the specific errors are
@@ -72,6 +80,12 @@ const CreateAccount = (): ReactElement => {
 
     return await response.json();
   };
+
+  // this function will be called upon successful account creation
+  // and redirect the user to the login page
+  const createdAccountRedirect = () => {
+    router.push('/login');
+  }
 
 
   // handlers
@@ -101,7 +115,12 @@ const CreateAccount = (): ReactElement => {
       // use this password for testing: weakpassweakpassweakpass2021!
       // exposed password that passes validation
       if (passwordExposed.result) {
-        setExpPass(true);
+        setModal(true);
+      } else {
+        // if password is not exposed, we want to finish creating the account
+        // (would be another request if we had data persistence) and
+        // redirect the user to the login page
+        createdAccountRedirect();
       }
 
     } else {
@@ -163,11 +182,9 @@ const CreateAccount = (): ReactElement => {
     );
   };
 
-  // this function will be called upon successful account creation
-  // and redirect the user to the login page
-  const createdAccountRedirect = () => {
-    router.push('/login');
-  }
+  const closeModal = () => {
+    setModal(false);
+  };
 
   // style classes
   const {
@@ -212,7 +229,11 @@ const CreateAccount = (): ReactElement => {
           <Button text={'Create Account'} />
         </form>
       </article>
-      <Modal show={exposedPass} createAccount={createdAccountRedirect} />
+      <Modal
+        show={showModal}
+        createAccount={createdAccountRedirect}
+        closeModal={closeModal}
+      />
     </>
   );
 };

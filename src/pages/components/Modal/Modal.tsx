@@ -1,9 +1,10 @@
-import { ReactElement, useState } from 'react';
+import { useState, ReactElement, Dispatch, SetStateAction, } from 'react';
 import styles from './modal.module.scss';
 import Button from '../Button';
 
 interface Props {
   show: boolean;
+  closeModal: () => void;
   createAccount: () => void;
 }
 
@@ -13,6 +14,7 @@ interface Props {
 const Modal = (props: Props): ReactElement => {
   const {
     show,
+    closeModal,
     createAccount
   } = props;
   if (!show) return null;
@@ -43,7 +45,11 @@ const Modal = (props: Props): ReactElement => {
           Your password has been found in a data breach and is exposed. We recommend creating a new password.
         </h2>
         <div className={buttonContainer}>
-          <Button style={changeButton} text={'Change password (recommended)'} />
+          <Button
+            style={changeButton}
+            text={'Change password (recommended)'}
+            onClick={closeModal}
+          />
           <Button
             style={proceedButton}
             text={'Proceed with unsafe password'}
