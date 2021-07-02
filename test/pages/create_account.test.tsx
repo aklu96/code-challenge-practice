@@ -14,7 +14,10 @@ describe('CreateAccount', () => {
 
   test('rendering', () => {
     render(<CreateAccount />);
-    fetchMock.mockResponseOnce(JSON.stringify({}));
+    fetchMock.mockResponseOnce(JSON.stringify({
+      username: '',
+      password: ''
+    }));
 
     // imitates a user clicking the create account button
     userEvent.click(screen.getByText('Create Account'));
@@ -23,7 +26,10 @@ describe('CreateAccount', () => {
     // to our api endpoint and corresponding options
     expect(fetchMock).toBeCalledTimes(1);
     expect(fetchMock).toBeCalledWith('/api/create_new_account', {
-      body: '{}',
+      body: JSON.stringify({
+        username: '',
+        password: ''
+      }),
       method: 'POST',
     });
   });

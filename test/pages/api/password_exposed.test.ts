@@ -12,7 +12,9 @@ describe('/api/password_exposed', () => {
     const { req, res } = mockRequest({
       method: 'POST',
       body: {
-        password: 'weakpass',
+
+        // changed to a password that will pass validation
+        password: 'weakpassweakpassweakpass2021!',
       },
     });
 

@@ -23,13 +23,13 @@ import Button from './components/Button';
 import Modal from './components/Modal';
 
 interface Errors {
-  username_too_short?: string;
-  username_too_long?: string;
-  password_too_short?: string;
-  password_too_long?: string;
-  password_no_letter?: string;
-  password_no_number?: string;
-  password_no_symbol?: string;
+  username_too_short?: boolean;
+  username_too_long?: boolean;
+  password_too_short?: boolean;
+  password_too_long?: boolean;
+  password_no_letter?: boolean;
+  password_no_number?: boolean;
+  password_no_symbol?: boolean;
 }
 
 const CreateAccount = (): ReactElement => {

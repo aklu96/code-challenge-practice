@@ -9,6 +9,7 @@ interface CreateNewAccountParameters {
 // endpoint will return an informative object to the UI;
 // if either username or password does not meet criteria,
 // the specific error(s) will be displayed
+// error object values are specific messages to be displayed on the UI
 interface BooleanResult {
   result: boolean;
   errors?: Record<string, string>;
