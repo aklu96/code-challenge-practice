@@ -52,7 +52,7 @@ const Modal = (props: Props): ReactElement => {
           />
           <Button
             style={proceedButton}
-            text={'Proceed with unsafe password'}
+            text={'Proceed'}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
             onClick={createAccount}
