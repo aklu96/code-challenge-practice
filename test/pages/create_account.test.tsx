@@ -1,7 +1,11 @@
-import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import fetchMock from 'jest-fetch-mock';
 import CreateAccount from 'src/pages/create_account';
+
+// import and mock for next router
+import router from "next/router";
+jest.mock('next/router', () => require('next-router-mock'));
 
 describe('CreateAccount', () => {
   beforeEach(() => {
@@ -53,6 +57,57 @@ describe('CreateAccount', () => {
       screen.getByText('Your password must contain a number.');
       screen.getByText('Your password must contain a symbol (!,@,#,$,%).');
     });
+  });
+
+  test('creating account with credentials that pass validation and do not have an exposed password should route the user to the login page', async () => {
+    render(<CreateAccount />);
+
+    // first API request should return true (validated)
+    fetchMock.mockResponseOnce(JSON.stringify({
+      result: true
+    }))
+    // second API request should return false (password not exposed)
+    .mockResponseOnce(JSON.stringify({
+      result: false
+    }));
+
+    // credentials that pass validation
+    userEvent.type(screen.getByLabelText('Username'), '10charslong');
+    userEvent.type(screen.getByLabelText('Password'), '20charslongandcontainsnumsandsymbols!');
+    userEvent.click(screen.getByText('Create Account'));
+
+    // after the click, tests that a fetch request was made once
+    // to our create_new_account endpoint with the correct options
+    expect(fetchMock).toBeCalledTimes(1);
+    expect(fetchMock).toBeCalledWith('/api/create_new_account', {
+      body: JSON.stringify({
+        username: '10charslong',
+        password: '20charslongandcontainsnumsandsymbols!'
+      }),
+      method: 'POST',
+    });
+
+    // wait for our first fetch to resolve
+    await waitFor(() => {});
+
+    // after validation, tests that a fetch request was made once
+    // to our password_exposed endpoint with the correct options
+    expect(fetchMock).toBeCalledTimes(2);
+    expect(fetchMock).toBeCalledWith('/api/password_exposed', {
+      body: JSON.stringify({
+        password: '20charslongandcontainsnumsandsymbols!'
+      }),
+      method: 'POST',
+    });
+
+    // wait for our second fetch to resolve
+    await waitFor(() => {});
+
+    // user should be routed to login page
+    expect(router).toMatchObject({
+      pathname: '/login'
+    });
+
   });
 
   test('creating account with credentials that pass validation but have an exposed password should render the exposed password modal', async () => {
@@ -129,7 +184,7 @@ describe('CreateAccount', () => {
     expect(modal).toBeNull();
   });
 
-  /* test('in the exposed password modal, clicking "proceed" should route the user to the login page', async () => {
+  test('in the exposed password modal, clicking "proceed" should route the user to the login page', async () => {
     render(<CreateAccount />);
 
     // first API request should return true (validated)
@@ -149,9 +204,10 @@ describe('CreateAccount', () => {
     // wait for our requests to resolve
     await waitFor(() => {});
 
-    // clicking the change password button should remove the modal
+    // clicking the proceed button should route the user to the login page
     userEvent.click(screen.getByText('Proceed'));
-    const modal = screen.queryByText('Your password has been found in a data breach and is exposed. We recommend creating a new password.');
-    expect(modal).toBeNull();
-  }); */
+    expect(router).toMatchObject({
+      pathname: '/login'
+    });
+  });
 });
