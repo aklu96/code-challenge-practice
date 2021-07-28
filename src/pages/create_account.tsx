@@ -23,26 +23,31 @@ import Button from './components/Button';
 import Modal from './components/Modal';
 
 interface Errors {
-  username_too_short?: boolean;
-  username_too_long?: boolean;
-  password_too_short?: boolean;
-  password_too_long?: boolean;
-  password_no_letter?: boolean;
-  password_no_number?: boolean;
-  password_no_symbol?: boolean;
+  invalid_email?: string | undefined;
+  username_too_short?: string | undefined;
+  username_too_long?: string | undefined;
+  password_too_short?: string | undefined;
+  password_too_long?: string | undefined;
+  password_no_letter?: string | undefined;
+  password_no_number?: string | undefined;
+  password_no_symbol?: string | undefined;
 }
 
 const CreateAccount = (): ReactElement => {
   // state
   // form state management
+  const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
   const setAccountInfo = {
+    email: setEmail,
     username: setUsername,
-    password: setPassword
+    password: setPassword,
   };
 
   // errors objects will match the response returned from the api
+  const [emailErrs, setEmailErrs] = useState<Errors>({});
   const [usernameErrs, setUserErrs] = useState<Errors>({});
   const [passwordErrs, setPassErrs] = useState<Errors>({});
 
@@ -61,6 +66,7 @@ const CreateAccount = (): ReactElement => {
     const response = await fetch('/api/create_new_account', {
       method: 'POST',
       body: JSON.stringify({
+        email,
         username,
         password
       }),
@@ -104,6 +110,7 @@ const CreateAccount = (): ReactElement => {
     // if response succeeds, we want to clear any existing errors
     // and make an API call to password_exposed
     if (response.result) {
+      setEmailErrs({});
       setUserErrs({});
       setPassErrs({});
 
@@ -127,6 +134,7 @@ const CreateAccount = (): ReactElement => {
       // if response fails, update the error state variables
       // which will render the error messages
       const {
+        invalid_email,
         username_too_short,
         username_too_long,
         password_too_short,
@@ -138,6 +146,9 @@ const CreateAccount = (): ReactElement => {
 
       // all properties will be copied with either the
       // corresponding message or undefined as a value
+      setEmailErrs({
+        invalid_email
+      });
       setUserErrs({
         username_too_short,
         username_too_long
@@ -153,6 +164,20 @@ const CreateAccount = (): ReactElement => {
   };
 
   // render methods
+  const renderEmailErrors = (): ReactElement => {
+    return (
+      <div>
+        {Object.entries(emailErrs).map(([errorID, message]) => {
+          // value will either be undefined or the error message
+          // if value exists, render an Error element and pass the message to it
+          if (message) {
+            return <Error key={errorID} message={message} />
+          }
+        })}
+      </div>
+    );
+  };
+
   const renderUsernameErrors = (): ReactElement => {
     return (
       <div>
@@ -209,6 +234,14 @@ const CreateAccount = (): ReactElement => {
             />
           </figure>
           <h1 className={title} >Create New Account</h1>
+          <Input
+            id={'email'}
+            type={'text'}
+            name={'Email'}
+            value={email}
+            onChange={handleInputChange}
+          />
+          {renderEmailErrors()}
           <Input
             id={'username'}
             type={'text'}

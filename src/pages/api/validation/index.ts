@@ -1,7 +1,9 @@
+import validateEmail from './validateEmail';
 import validateUsername from './validateUsername';
 import validatePassword from './validatePassword';
 
 interface CreateNewAccountParameters {
+  email: string;
   username: string;
   password: string;
 }
@@ -19,12 +21,13 @@ const validate = (info: CreateNewAccountParameters): BooleanResult => {
   let result = true;
   let errors: Record<string, string>;
 
+  const emailRes = validateEmail(info.email);
   const usernameRes = validateUsername(info.username);
   const passwordRes = validatePassword(info.password);
 
-  if (Object.keys(usernameRes).length > 0 || Object.keys(passwordRes).length > 0) {
+  if (Object.keys(emailRes).length > 0 || Object.keys(usernameRes).length > 0 || Object.keys(passwordRes).length > 0) {
     result = false;
-    errors = Object.assign(usernameRes, passwordRes);
+    errors = Object.assign(emailRes, usernameRes, passwordRes);
   }
 
   return result ? {
