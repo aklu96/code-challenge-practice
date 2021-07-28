@@ -7,7 +7,7 @@
 */
 
 // hooks + types
-import { useState, FormEvent, ReactElement } from 'react';
+import { useState, useEffect, FormEvent, ReactElement } from 'react';
 import { useRouter } from 'next/router';
 
 // UI
@@ -151,7 +151,6 @@ const CreateAccount = (): ReactElement => {
       });
     }
   };
-
 
   // render methods
   const renderUsernameErrors = (): ReactElement => {

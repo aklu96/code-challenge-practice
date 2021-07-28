@@ -1,4 +1,4 @@
-import { useState, ReactElement, Dispatch, SetStateAction, } from 'react';
+import { useState, useEffect, ReactElement } from 'react';
 import styles from './modal.module.scss';
 import Button from '../Button';
 
@@ -19,8 +19,21 @@ const Modal = (props: Props): ReactElement => {
   } = props;
   if (!show) return null;
 
+  // states for button color changes (can likely be improved via scss)
   const [hover, setHover] = useState(false);
 
+  // handler for exiting modal when anywhere outside of the modal is clicked
+  useEffect(() => {
+    document.addEventListener('click', (e) => {
+      // cast target as a div element which has an id property
+      const target = e.target as HTMLElement;
+
+      // if modal background is clicked, close the modal
+      if (target.id === 'modalBackground') closeModal();
+    });
+  });
+
+  // modal and button styling
   const {
     modalBackground,
     modal,
@@ -39,7 +52,7 @@ const Modal = (props: Props): ReactElement => {
   }
 
   return (
-    <div className={modalBackground}>
+    <div id={'modalBackground'} className={modalBackground}>
       <div className={modal}>
         <h2 className={title}>
           Your password has been found in a data breach and is exposed. We recommend creating a new password.
