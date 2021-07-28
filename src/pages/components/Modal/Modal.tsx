@@ -23,14 +23,18 @@ const Modal = (props: Props): ReactElement => {
   const [hover, setHover] = useState(false);
 
   // handler for exiting modal when anywhere outside of the modal is clicked
-  useEffect(() => {
-    document.addEventListener('click', (e) => {
-      // cast target as a div element which has an id property
-      const target = e.target as HTMLElement;
+  const modalBackgroundClick = (e: MouseEvent) => {
+    // cast target as a div element which has an id property
+    const target = e.target as HTMLElement;
 
-      // if modal background is clicked, close the modal
-      if (target.id === 'modalBackground') closeModal();
-    });
+    // if modal background is clicked, close the modal
+    if (target.id === 'modalBackground') closeModal();
+  };
+
+  // implement the handler in an effect hook
+  useEffect(() => {
+    document.addEventListener('click', modalBackgroundClick);
+    return () => document.removeEventListener('click', modalBackgroundClick);
   });
 
   // modal and button styling
