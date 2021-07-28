@@ -12,6 +12,9 @@ describe('/api/create_new_account', () => {
       },
     });
 
+    // pass our mock request and response objects through this function
+    // which is our validation endpoint function,
+    // and then test the response
     await createNewAccount(req, res);
 
     expect(res._getStatusCode()).toBe(201);
